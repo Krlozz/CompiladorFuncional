@@ -1,0 +1,44 @@
+main(int:q) {
+	// comentario	
+	/*
+	comentario multiples lineas
+	*/
+	float:hola;
+	hola=8/5*5+2;
+	int:prueba;
+	int:prueba2;
+	prueba2=1;
+	int:prueba3;
+	float:prueba4;
+	prueba4=1.53e12;
+	string:palabra;
+	palabra="hola";
+	bool:vrd;
+	vrd=0;
+	char:as;
+	as='o';
+	
+	
+	if(hola<10.2){
+		hola=1.1;
+	} else {
+		hola=0;
+	}
+
+	
+	
+	while(prueba2==3) do{
+		prueba=-2+1;
+	}
+
+	int yo(int:lolo){
+		
+		int:trer;
+		float:terwtw;
+	bool:pana;
+	pana=1;
+	}
+	int:tr;
+	
+ 
+}

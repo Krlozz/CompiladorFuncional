@@ -1,0 +1,2474 @@
+Terminales no usados en la gramática
+
+   BREAK
+   BOOLEANO
+   BracketOP
+   BracketCL
+   IGUAL
+
+
+Estado 18 conflictos: 14 desplazamiento/reducción
+Estado 34 conflictos: 7 desplazamiento/reducción
+Estado 36 conflictos: 14 desplazamiento/reducción
+Estado 47 conflictos: 14 desplazamiento/reducción
+Estado 68 conflictos: 7 desplazamiento/reducción
+Estado 146 conflictos: 14 desplazamiento/reducción
+Estado 155 conflictos: 7 desplazamiento/reducción
+Estado 163 conflictos: 6 desplazamiento/reducción
+Estado 172 conflictos: 6 desplazamiento/reducción
+Estado 175 conflictos: 6 desplazamiento/reducción
+
+
+Gramática
+
+    0 $accept: program $end
+
+    1 program: MAIN ParetOP ParetCL KEYOP comandos KEYCL metodo
+    2        | MAIN ParetOP declaration ParetCL KEYOP comandos KEYCL metodo
+    3        | MAIN ParetOP ParetCL KEYOP comandos metodo comandos KEYCL metodo
+    4        | MAIN ParetOP declaration ParetCL KEYOP comandos metodo comandos KEYCL metodo
+    5        | error
+
+    6 metodo: %empty
+    7       | lista_tipo ID ParetOP ParetCL KEYOP comandos KEYCL metodo
+    8       | lista_tipo ID ParetOP ParetCL KEYOP comandos metodo comandos KEYCL metodo
+    9       | lista_tipo ID ParetOP declaration ParetCL KEYOP comandos KEYCL metodo
+   10       | error
+
+   11 lista_tipo: INT_TYPE
+   12           | FLOAT_TYPE
+   13           | STRING_TYPE
+   14           | LETRA_TYPE
+   15           | BOOL_TYPE
+
+   16 comandos: command_list
+
+   17 command_list: KEYOP command_list KEYCL
+   18             | command command_list
+   19             | %empty
+
+   20 command: comando_simple FinCommand
+   21        | bucle
+   22        | error
+
+   23 bucle: controlF
+   24      | controlFor
+   25      | controlWhile
+   26      | controlDo
+   27      | controlWhileDo
+
+   28 comando_simple: PRINT STRING
+   29               | RETURN
+   30               | attrib
+   31               | declaration
+
+   32 controlF: IF ParetOP l_expr ParetCL KEYOP comandos KEYCL controlElse
+
+   33 controlElse: %empty
+   34            | ELSE KEYOP comandos KEYCL
+
+   35 controlFor: FOR ParetOP ffirst FinCommand l_expr FinCommand fthird ParetCL KEYOP comandos KEYCL
+
+   36 ffirst: %empty
+   37       | attrib_list
+
+   38 fthird: %empty
+   39       | comando_simple COMA fthird
+   40       | comando_simple
+
+   41 controlWhile: WHILE ParetOP l_expr ParetCL KEYOP comandos KEYCL
+
+   42 controlDo: DO KEYOP comandos KEYCL WHILE ParetOP l_expr ParetCL FinCommand
+
+   43 controlWhileDo: WHILE ParetOP l_expr ParetCL DO KEYOP comandos KEYCL
+
+   44 declaration: INT_TYPE ASIGNACION ID
+   45            | FLOAT_TYPE ASIGNACION ID
+   46            | STRING_TYPE ASIGNACION ID
+   47            | LETRA_TYPE ASIGNACION ID
+   48            | BOOL_TYPE ASIGNACION ID
+
+   49 attrib_list: attrib ',' attrib_list
+   50            | attrib
+
+   51 attrib: i_attrib
+   52       | ID MATH_INC
+   53       | ID MATH_DEC
+   54       | ID '=' ID
+   55       | error
+
+   56 i_attrib: ID '=' g_expr
+   57         | ID '=' t_expr
+   58         | ID '=' c_expr
+
+   59 t_expr: STRING
+
+   60 c_expr: CHAR
+
+   61 l_expr: l_expr EQL l_factor
+   62       | l_expr AND l_factor
+   63       | l_expr OR l_factor
+   64       | l_expr MAYOR_QUE l_factor
+   65       | l_expr MENOR_QUE l_factor
+   66       | NOT l_expr
+   67       | l_factor
+
+   68 l_factor: ParetOP l_expr ParetOP
+   69         | INTEGER
+   70         | FLOTANTE
+   71         | ID
+
+   72 g_expr: g_expr '+' g_term
+   73       | g_expr '-' g_term
+   74       | g_term
+
+   75 g_term: g_term '*' g_factor
+   76       | g_term '/' g_factor
+   77       | g_factor
+
+   78 g_factor: ParetOP g_expr ParetOP
+   79         | INTEGER
+   80         | FLOTANTE
+
+
+Terminales con las reglas donde aparecen
+
+$end (0) 0
+'*' (42) 75
+'+' (43) 72
+',' (44) 49
+'-' (45) 73
+'/' (47) 76
+'=' (61) 54 56 57 58
+error (256) 5 10 22 55
+MAIN (258) 1 2 3 4
+IF (259) 32
+ELSE (260) 34
+DO (261) 42 43
+WHILE (262) 41 42 43
+FOR (263) 35
+BREAK (264)
+PRINT (265) 28
+RETURN (266) 29
+INT_TYPE (267) 11 44
+FLOAT_TYPE (268) 12 45
+LETRA_TYPE (269) 14 47
+STRING_TYPE (270) 13 46
+BOOL_TYPE (271) 15 48
+CHAR (272) 60
+STRING (273) 28 59
+INTEGER (274) 69 79
+FLOTANTE (275) 70 80
+BOOLEANO (276)
+ID (277) 7 8 9 44 45 46 47 48 52 53 54 56 57 58 71
+MATH_INC (278) 52
+MATH_DEC (279) 53
+EQL (280) 61
+MENOR_QUE (281) 65
+MAYOR_QUE (282) 64
+AND (283) 62
+OR (284) 63
+NOT (285) 66
+KEYOP (286) 1 2 3 4 7 8 9 17 32 34 35 41 42 43
+KEYCL (287) 1 2 3 4 7 8 9 17 32 34 35 41 42 43
+ParetOP (288) 1 2 3 4 7 8 9 32 35 41 42 43 68 78
+ParetCL (289) 1 2 3 4 7 8 9 32 35 41 42 43
+BracketOP (290)
+BracketCL (291)
+IGUAL (292)
+ASIGNACION (293) 44 45 46 47 48
+COMA (294) 39
+FinCommand (295) 20 35 42
+
+
+No terminales con las reglas donde aparecen
+
+$accept (47)
+    en la izquierda: 0
+program (48)
+    en la izquierda: 1 2 3 4 5, en la derecha: 0
+metodo (49)
+    en la izquierda: 6 7 8 9 10, en la derecha: 1 2 3 4 7 8 9
+lista_tipo (50)
+    en la izquierda: 11 12 13 14 15, en la derecha: 7 8 9
+comandos (51)
+    en la izquierda: 16, en la derecha: 1 2 3 4 7 8 9 32 34 35 41 42
+    43
+command_list (52)
+    en la izquierda: 17 18 19, en la derecha: 16 17 18
+command (53)
+    en la izquierda: 20 21 22, en la derecha: 18
+bucle (54)
+    en la izquierda: 23 24 25 26 27, en la derecha: 21
+comando_simple (55)
+    en la izquierda: 28 29 30 31, en la derecha: 20 39 40
+controlF (56)
+    en la izquierda: 32, en la derecha: 23
+controlElse (57)
+    en la izquierda: 33 34, en la derecha: 32
+controlFor (58)
+    en la izquierda: 35, en la derecha: 24
+ffirst (59)
+    en la izquierda: 36 37, en la derecha: 35
+fthird (60)
+    en la izquierda: 38 39 40, en la derecha: 35 39
+controlWhile (61)
+    en la izquierda: 41, en la derecha: 25
+controlDo (62)
+    en la izquierda: 42, en la derecha: 26
+controlWhileDo (63)
+    en la izquierda: 43, en la derecha: 27
+declaration (64)
+    en la izquierda: 44 45 46 47 48, en la derecha: 2 4 9 31
+attrib_list (65)
+    en la izquierda: 49 50, en la derecha: 37 49
+attrib (66)
+    en la izquierda: 51 52 53 54 55, en la derecha: 30 49 50
+i_attrib (67)
+    en la izquierda: 56 57 58, en la derecha: 51
+t_expr (68)
+    en la izquierda: 59, en la derecha: 57
+c_expr (69)
+    en la izquierda: 60, en la derecha: 58
+l_expr (70)
+    en la izquierda: 61 62 63 64 65 66 67, en la derecha: 32 35 41
+    42 43 61 62 63 64 65 66 68
+l_factor (71)
+    en la izquierda: 68 69 70 71, en la derecha: 61 62 63 64 65 67
+g_expr (72)
+    en la izquierda: 72 73 74, en la derecha: 56 72 73 78
+g_term (73)
+    en la izquierda: 75 76 77, en la derecha: 72 73 74 75 76
+g_factor (74)
+    en la izquierda: 78 79 80, en la derecha: 75 76 77
+
+
+Estado 0
+
+    0 $accept: . program $end
+
+    error  desplazar e ir al estado 1
+    MAIN   desplazar e ir al estado 2
+
+    program  ir al estado 3
+
+
+Estado 1
+
+    5 program: error .
+
+    $default  reduce usando la regla 5 (program)
+
+
+Estado 2
+
+    1 program: MAIN . ParetOP ParetCL KEYOP comandos KEYCL metodo
+    2        | MAIN . ParetOP declaration ParetCL KEYOP comandos KEYCL metodo
+    3        | MAIN . ParetOP ParetCL KEYOP comandos metodo comandos KEYCL metodo
+    4        | MAIN . ParetOP declaration ParetCL KEYOP comandos metodo comandos KEYCL metodo
+
+    ParetOP  desplazar e ir al estado 4
+
+
+Estado 3
+
+    0 $accept: program . $end
+
+    $end  desplazar e ir al estado 5
+
+
+Estado 4
+
+    1 program: MAIN ParetOP . ParetCL KEYOP comandos KEYCL metodo
+    2        | MAIN ParetOP . declaration ParetCL KEYOP comandos KEYCL metodo
+    3        | MAIN ParetOP . ParetCL KEYOP comandos metodo comandos KEYCL metodo
+    4        | MAIN ParetOP . declaration ParetCL KEYOP comandos metodo comandos KEYCL metodo
+
+    INT_TYPE     desplazar e ir al estado 6
+    FLOAT_TYPE   desplazar e ir al estado 7
+    LETRA_TYPE   desplazar e ir al estado 8
+    STRING_TYPE  desplazar e ir al estado 9
+    BOOL_TYPE    desplazar e ir al estado 10
+    ParetCL      desplazar e ir al estado 11
+
+    declaration  ir al estado 12
+
+
+Estado 5
+
+    0 $accept: program $end .
+
+    $default  aceptar
+
+
+Estado 6
+
+   44 declaration: INT_TYPE . ASIGNACION ID
+
+    ASIGNACION  desplazar e ir al estado 13
+
+
+Estado 7
+
+   45 declaration: FLOAT_TYPE . ASIGNACION ID
+
+    ASIGNACION  desplazar e ir al estado 14
+
+
+Estado 8
+
+   47 declaration: LETRA_TYPE . ASIGNACION ID
+
+    ASIGNACION  desplazar e ir al estado 15
+
+
+Estado 9
+
+   46 declaration: STRING_TYPE . ASIGNACION ID
+
+    ASIGNACION  desplazar e ir al estado 16
+
+
+Estado 10
+
+   48 declaration: BOOL_TYPE . ASIGNACION ID
+
+    ASIGNACION  desplazar e ir al estado 17
+
+
+Estado 11
+
+    1 program: MAIN ParetOP ParetCL . KEYOP comandos KEYCL metodo
+    3        | MAIN ParetOP ParetCL . KEYOP comandos metodo comandos KEYCL metodo
+
+    KEYOP  desplazar e ir al estado 18
+
+
+Estado 12
+
+    2 program: MAIN ParetOP declaration . ParetCL KEYOP comandos KEYCL metodo
+    4        | MAIN ParetOP declaration . ParetCL KEYOP comandos metodo comandos KEYCL metodo
+
+    ParetCL  desplazar e ir al estado 19
+
+
+Estado 13
+
+   44 declaration: INT_TYPE ASIGNACION . ID
+
+    ID  desplazar e ir al estado 20
+
+
+Estado 14
+
+   45 declaration: FLOAT_TYPE ASIGNACION . ID
+
+    ID  desplazar e ir al estado 21
+
+
+Estado 15
+
+   47 declaration: LETRA_TYPE ASIGNACION . ID
+
+    ID  desplazar e ir al estado 22
+
+
+Estado 16
+
+   46 declaration: STRING_TYPE ASIGNACION . ID
+
+    ID  desplazar e ir al estado 23
+
+
+Estado 17
+
+   48 declaration: BOOL_TYPE ASIGNACION . ID
+
+    ID  desplazar e ir al estado 24
+
+
+Estado 18
+
+    1 program: MAIN ParetOP ParetCL KEYOP . comandos KEYCL metodo
+    3        | MAIN ParetOP ParetCL KEYOP . comandos metodo comandos KEYCL metodo
+
+    error        desplazar e ir al estado 25
+    IF           desplazar e ir al estado 26
+    DO           desplazar e ir al estado 27
+    WHILE        desplazar e ir al estado 28
+    FOR          desplazar e ir al estado 29
+    PRINT        desplazar e ir al estado 30
+    RETURN       desplazar e ir al estado 31
+    INT_TYPE     desplazar e ir al estado 6
+    FLOAT_TYPE   desplazar e ir al estado 7
+    LETRA_TYPE   desplazar e ir al estado 8
+    STRING_TYPE  desplazar e ir al estado 9
+    BOOL_TYPE    desplazar e ir al estado 10
+    ID           desplazar e ir al estado 32
+    KEYOP        desplazar e ir al estado 33
+
+    error        [reduce usando la regla 19 (command_list)]
+    IF           [reduce usando la regla 19 (command_list)]
+    DO           [reduce usando la regla 19 (command_list)]
+    WHILE        [reduce usando la regla 19 (command_list)]
+    FOR          [reduce usando la regla 19 (command_list)]
+    PRINT        [reduce usando la regla 19 (command_list)]
+    RETURN       [reduce usando la regla 19 (command_list)]
+    INT_TYPE     [reduce usando la regla 19 (command_list)]
+    FLOAT_TYPE   [reduce usando la regla 19 (command_list)]
+    LETRA_TYPE   [reduce usando la regla 19 (command_list)]
+    STRING_TYPE  [reduce usando la regla 19 (command_list)]
+    BOOL_TYPE    [reduce usando la regla 19 (command_list)]
+    ID           [reduce usando la regla 19 (command_list)]
+    KEYOP        [reduce usando la regla 19 (command_list)]
+    KEYCL        reduce usando la regla 19 (command_list)
+
+    comandos        ir al estado 34
+    command_list    ir al estado 35
+    command         ir al estado 36
+    bucle           ir al estado 37
+    comando_simple  ir al estado 38
+    controlF        ir al estado 39
+    controlFor      ir al estado 40
+    controlWhile    ir al estado 41
+    controlDo       ir al estado 42
+    controlWhileDo  ir al estado 43
+    declaration     ir al estado 44
+    attrib          ir al estado 45
+    i_attrib        ir al estado 46
+
+
+Estado 19
+
+    2 program: MAIN ParetOP declaration ParetCL . KEYOP comandos KEYCL metodo
+    4        | MAIN ParetOP declaration ParetCL . KEYOP comandos metodo comandos KEYCL metodo
+
+    KEYOP  desplazar e ir al estado 47
+
+
+Estado 20
+
+   44 declaration: INT_TYPE ASIGNACION ID .
+
+    $default  reduce usando la regla 44 (declaration)
+
+
+Estado 21
+
+   45 declaration: FLOAT_TYPE ASIGNACION ID .
+
+    $default  reduce usando la regla 45 (declaration)
+
+
+Estado 22
+
+   47 declaration: LETRA_TYPE ASIGNACION ID .
+
+    $default  reduce usando la regla 47 (declaration)
+
+
+Estado 23
+
+   46 declaration: STRING_TYPE ASIGNACION ID .
+
+    $default  reduce usando la regla 46 (declaration)
+
+
+Estado 24
+
+   48 declaration: BOOL_TYPE ASIGNACION ID .
+
+    $default  reduce usando la regla 48 (declaration)
+
+
+Estado 25
+
+   22 command: error .
+   55 attrib: error .
+
+    FinCommand  reduce usando la regla 55 (attrib)
+    $default    reduce usando la regla 22 (command)
+
+
+Estado 26
+
+   32 controlF: IF . ParetOP l_expr ParetCL KEYOP comandos KEYCL controlElse
+
+    ParetOP  desplazar e ir al estado 48
+
+
+Estado 27
+
+   42 controlDo: DO . KEYOP comandos KEYCL WHILE ParetOP l_expr ParetCL FinCommand
+
+    KEYOP  desplazar e ir al estado 49
+
+
+Estado 28
+
+   41 controlWhile: WHILE . ParetOP l_expr ParetCL KEYOP comandos KEYCL
+   43 controlWhileDo: WHILE . ParetOP l_expr ParetCL DO KEYOP comandos KEYCL
+
+    ParetOP  desplazar e ir al estado 50
+
+
+Estado 29
+
+   35 controlFor: FOR . ParetOP ffirst FinCommand l_expr FinCommand fthird ParetCL KEYOP comandos KEYCL
+
+    ParetOP  desplazar e ir al estado 51
+
+
+Estado 30
+
+   28 comando_simple: PRINT . STRING
+
+    STRING  desplazar e ir al estado 52
+
+
+Estado 31
+
+   29 comando_simple: RETURN .
+
+    $default  reduce usando la regla 29 (comando_simple)
+
+
+Estado 32
+
+   52 attrib: ID . MATH_INC
+   53       | ID . MATH_DEC
+   54       | ID . '=' ID
+   56 i_attrib: ID . '=' g_expr
+   57         | ID . '=' t_expr
+   58         | ID . '=' c_expr
+
+    MATH_INC  desplazar e ir al estado 53
+    MATH_DEC  desplazar e ir al estado 54
+    '='       desplazar e ir al estado 55
+
+
+Estado 33
+
+   17 command_list: KEYOP . command_list KEYCL
+
+    error        desplazar e ir al estado 25
+    IF           desplazar e ir al estado 26
+    DO           desplazar e ir al estado 27
+    WHILE        desplazar e ir al estado 28
+    FOR          desplazar e ir al estado 29
+    PRINT        desplazar e ir al estado 30
+    RETURN       desplazar e ir al estado 31
+    INT_TYPE     desplazar e ir al estado 6
+    FLOAT_TYPE   desplazar e ir al estado 7
+    LETRA_TYPE   desplazar e ir al estado 8
+    STRING_TYPE  desplazar e ir al estado 9
+    BOOL_TYPE    desplazar e ir al estado 10
+    ID           desplazar e ir al estado 32
+    KEYOP        desplazar e ir al estado 33
+
+    KEYCL  reduce usando la regla 19 (command_list)
+
+    command_list    ir al estado 56
+    command         ir al estado 36
+    bucle           ir al estado 37
+    comando_simple  ir al estado 38
+    controlF        ir al estado 39
+    controlFor      ir al estado 40
+    controlWhile    ir al estado 41
+    controlDo       ir al estado 42
+    controlWhileDo  ir al estado 43
+    declaration     ir al estado 44
+    attrib          ir al estado 45
+    i_attrib        ir al estado 46
+
+
+Estado 34
+
+    1 program: MAIN ParetOP ParetCL KEYOP comandos . KEYCL metodo
+    3        | MAIN ParetOP ParetCL KEYOP comandos . metodo comandos KEYCL metodo
+
+    error        desplazar e ir al estado 57
+    INT_TYPE     desplazar e ir al estado 58
+    FLOAT_TYPE   desplazar e ir al estado 59
+    LETRA_TYPE   desplazar e ir al estado 60
+    STRING_TYPE  desplazar e ir al estado 61
+    BOOL_TYPE    desplazar e ir al estado 62
+    KEYCL        desplazar e ir al estado 63
+
+    error        [reduce usando la regla 6 (metodo)]
+    IF           reduce usando la regla 6 (metodo)
+    DO           reduce usando la regla 6 (metodo)
+    WHILE        reduce usando la regla 6 (metodo)
+    FOR          reduce usando la regla 6 (metodo)
+    PRINT        reduce usando la regla 6 (metodo)
+    RETURN       reduce usando la regla 6 (metodo)
+    INT_TYPE     [reduce usando la regla 6 (metodo)]
+    FLOAT_TYPE   [reduce usando la regla 6 (metodo)]
+    LETRA_TYPE   [reduce usando la regla 6 (metodo)]
+    STRING_TYPE  [reduce usando la regla 6 (metodo)]
+    BOOL_TYPE    [reduce usando la regla 6 (metodo)]
+    ID           reduce usando la regla 6 (metodo)
+    KEYOP        reduce usando la regla 6 (metodo)
+    KEYCL        [reduce usando la regla 6 (metodo)]
+
+    metodo      ir al estado 64
+    lista_tipo  ir al estado 65
+
+
+Estado 35
+
+   16 comandos: command_list .
+
+    $default  reduce usando la regla 16 (comandos)
+
+
+Estado 36
+
+   18 command_list: command . command_list
+
+    error        desplazar e ir al estado 25
+    IF           desplazar e ir al estado 26
+    DO           desplazar e ir al estado 27
+    WHILE        desplazar e ir al estado 28
+    FOR          desplazar e ir al estado 29
+    PRINT        desplazar e ir al estado 30
+    RETURN       desplazar e ir al estado 31
+    INT_TYPE     desplazar e ir al estado 6
+    FLOAT_TYPE   desplazar e ir al estado 7
+    LETRA_TYPE   desplazar e ir al estado 8
+    STRING_TYPE  desplazar e ir al estado 9
+    BOOL_TYPE    desplazar e ir al estado 10
+    ID           desplazar e ir al estado 32
+    KEYOP        desplazar e ir al estado 33
+
+    error        [reduce usando la regla 19 (command_list)]
+    IF           [reduce usando la regla 19 (command_list)]
+    DO           [reduce usando la regla 19 (command_list)]
+    WHILE        [reduce usando la regla 19 (command_list)]
+    FOR          [reduce usando la regla 19 (command_list)]
+    PRINT        [reduce usando la regla 19 (command_list)]
+    RETURN       [reduce usando la regla 19 (command_list)]
+    INT_TYPE     [reduce usando la regla 19 (command_list)]
+    FLOAT_TYPE   [reduce usando la regla 19 (command_list)]
+    LETRA_TYPE   [reduce usando la regla 19 (command_list)]
+    STRING_TYPE  [reduce usando la regla 19 (command_list)]
+    BOOL_TYPE    [reduce usando la regla 19 (command_list)]
+    ID           [reduce usando la regla 19 (command_list)]
+    KEYOP        [reduce usando la regla 19 (command_list)]
+    KEYCL        reduce usando la regla 19 (command_list)
+
+    command_list    ir al estado 66
+    command         ir al estado 36
+    bucle           ir al estado 37
+    comando_simple  ir al estado 38
+    controlF        ir al estado 39
+    controlFor      ir al estado 40
+    controlWhile    ir al estado 41
+    controlDo       ir al estado 42
+    controlWhileDo  ir al estado 43
+    declaration     ir al estado 44
+    attrib          ir al estado 45
+    i_attrib        ir al estado 46
+
+
+Estado 37
+
+   21 command: bucle .
+
+    $default  reduce usando la regla 21 (command)
+
+
+Estado 38
+
+   20 command: comando_simple . FinCommand
+
+    FinCommand  desplazar e ir al estado 67
+
+
+Estado 39
+
+   23 bucle: controlF .
+
+    $default  reduce usando la regla 23 (bucle)
+
+
+Estado 40
+
+   24 bucle: controlFor .
+
+    $default  reduce usando la regla 24 (bucle)
+
+
+Estado 41
+
+   25 bucle: controlWhile .
+
+    $default  reduce usando la regla 25 (bucle)
+
+
+Estado 42
+
+   26 bucle: controlDo .
+
+    $default  reduce usando la regla 26 (bucle)
+
+
+Estado 43
+
+   27 bucle: controlWhileDo .
+
+    $default  reduce usando la regla 27 (bucle)
+
+
+Estado 44
+
+   31 comando_simple: declaration .
+
+    $default  reduce usando la regla 31 (comando_simple)
+
+
+Estado 45
+
+   30 comando_simple: attrib .
+
+    $default  reduce usando la regla 30 (comando_simple)
+
+
+Estado 46
+
+   51 attrib: i_attrib .
+
+    $default  reduce usando la regla 51 (attrib)
+
+
+Estado 47
+
+    2 program: MAIN ParetOP declaration ParetCL KEYOP . comandos KEYCL metodo
+    4        | MAIN ParetOP declaration ParetCL KEYOP . comandos metodo comandos KEYCL metodo
+
+    error        desplazar e ir al estado 25
+    IF           desplazar e ir al estado 26
+    DO           desplazar e ir al estado 27
+    WHILE        desplazar e ir al estado 28
+    FOR          desplazar e ir al estado 29
+    PRINT        desplazar e ir al estado 30
+    RETURN       desplazar e ir al estado 31
+    INT_TYPE     desplazar e ir al estado 6
+    FLOAT_TYPE   desplazar e ir al estado 7
+    LETRA_TYPE   desplazar e ir al estado 8
+    STRING_TYPE  desplazar e ir al estado 9
+    BOOL_TYPE    desplazar e ir al estado 10
+    ID           desplazar e ir al estado 32
+    KEYOP        desplazar e ir al estado 33
+
+    error        [reduce usando la regla 19 (command_list)]
+    IF           [reduce usando la regla 19 (command_list)]
+    DO           [reduce usando la regla 19 (command_list)]
+    WHILE        [reduce usando la regla 19 (command_list)]
+    FOR          [reduce usando la regla 19 (command_list)]
+    PRINT        [reduce usando la regla 19 (command_list)]
+    RETURN       [reduce usando la regla 19 (command_list)]
+    INT_TYPE     [reduce usando la regla 19 (command_list)]
+    FLOAT_TYPE   [reduce usando la regla 19 (command_list)]
+    LETRA_TYPE   [reduce usando la regla 19 (command_list)]
+    STRING_TYPE  [reduce usando la regla 19 (command_list)]
+    BOOL_TYPE    [reduce usando la regla 19 (command_list)]
+    ID           [reduce usando la regla 19 (command_list)]
+    KEYOP        [reduce usando la regla 19 (command_list)]
+    KEYCL        reduce usando la regla 19 (command_list)
+
+    comandos        ir al estado 68
+    command_list    ir al estado 35
+    command         ir al estado 36
+    bucle           ir al estado 37
+    comando_simple  ir al estado 38
+    controlF        ir al estado 39
+    controlFor      ir al estado 40
+    controlWhile    ir al estado 41
+    controlDo       ir al estado 42
+    controlWhileDo  ir al estado 43
+    declaration     ir al estado 44
+    attrib          ir al estado 45
+    i_attrib        ir al estado 46
+
+
+Estado 48
+
+   32 controlF: IF ParetOP . l_expr ParetCL KEYOP comandos KEYCL controlElse
+
+    INTEGER   desplazar e ir al estado 69
+    FLOTANTE  desplazar e ir al estado 70
+    ID        desplazar e ir al estado 71
+    NOT       desplazar e ir al estado 72
+    ParetOP   desplazar e ir al estado 73
+
+    l_expr    ir al estado 74
+    l_factor  ir al estado 75
+
+
+Estado 49
+
+   42 controlDo: DO KEYOP . comandos KEYCL WHILE ParetOP l_expr ParetCL FinCommand
+
+    error        desplazar e ir al estado 25
+    IF           desplazar e ir al estado 26
+    DO           desplazar e ir al estado 27
+    WHILE        desplazar e ir al estado 28
+    FOR          desplazar e ir al estado 29
+    PRINT        desplazar e ir al estado 30
+    RETURN       desplazar e ir al estado 31
+    INT_TYPE     desplazar e ir al estado 6
+    FLOAT_TYPE   desplazar e ir al estado 7
+    LETRA_TYPE   desplazar e ir al estado 8
+    STRING_TYPE  desplazar e ir al estado 9
+    BOOL_TYPE    desplazar e ir al estado 10
+    ID           desplazar e ir al estado 32
+    KEYOP        desplazar e ir al estado 33
+
+    KEYCL  reduce usando la regla 19 (command_list)
+
+    comandos        ir al estado 76
+    command_list    ir al estado 35
+    command         ir al estado 36
+    bucle           ir al estado 37
+    comando_simple  ir al estado 38
+    controlF        ir al estado 39
+    controlFor      ir al estado 40
+    controlWhile    ir al estado 41
+    controlDo       ir al estado 42
+    controlWhileDo  ir al estado 43
+    declaration     ir al estado 44
+    attrib          ir al estado 45
+    i_attrib        ir al estado 46
+
+
+Estado 50
+
+   41 controlWhile: WHILE ParetOP . l_expr ParetCL KEYOP comandos KEYCL
+   43 controlWhileDo: WHILE ParetOP . l_expr ParetCL DO KEYOP comandos KEYCL
+
+    INTEGER   desplazar e ir al estado 69
+    FLOTANTE  desplazar e ir al estado 70
+    ID        desplazar e ir al estado 71
+    NOT       desplazar e ir al estado 72
+    ParetOP   desplazar e ir al estado 73
+
+    l_expr    ir al estado 77
+    l_factor  ir al estado 75
+
+
+Estado 51
+
+   35 controlFor: FOR ParetOP . ffirst FinCommand l_expr FinCommand fthird ParetCL KEYOP comandos KEYCL
+
+    error  desplazar e ir al estado 78
+    ID     desplazar e ir al estado 32
+
+    FinCommand  reduce usando la regla 36 (ffirst)
+
+    ffirst       ir al estado 79
+    attrib_list  ir al estado 80
+    attrib       ir al estado 81
+    i_attrib     ir al estado 46
+
+
+Estado 52
+
+   28 comando_simple: PRINT STRING .
+
+    $default  reduce usando la regla 28 (comando_simple)
+
+
+Estado 53
+
+   52 attrib: ID MATH_INC .
+
+    $default  reduce usando la regla 52 (attrib)
+
+
+Estado 54
+
+   53 attrib: ID MATH_DEC .
+
+    $default  reduce usando la regla 53 (attrib)
+
+
+Estado 55
+
+   54 attrib: ID '=' . ID
+   56 i_attrib: ID '=' . g_expr
+   57         | ID '=' . t_expr
+   58         | ID '=' . c_expr
+
+    CHAR      desplazar e ir al estado 82
+    STRING    desplazar e ir al estado 83
+    INTEGER   desplazar e ir al estado 84
+    FLOTANTE  desplazar e ir al estado 85
+    ID        desplazar e ir al estado 86
+    ParetOP   desplazar e ir al estado 87
+
+    t_expr    ir al estado 88
+    c_expr    ir al estado 89
+    g_expr    ir al estado 90
+    g_term    ir al estado 91
+    g_factor  ir al estado 92
+
+
+Estado 56
+
+   17 command_list: KEYOP command_list . KEYCL
+
+    KEYCL  desplazar e ir al estado 93
+
+
+Estado 57
+
+   10 metodo: error .
+
+    $default  reduce usando la regla 10 (metodo)
+
+
+Estado 58
+
+   11 lista_tipo: INT_TYPE .
+
+    $default  reduce usando la regla 11 (lista_tipo)
+
+
+Estado 59
+
+   12 lista_tipo: FLOAT_TYPE .
+
+    $default  reduce usando la regla 12 (lista_tipo)
+
+
+Estado 60
+
+   14 lista_tipo: LETRA_TYPE .
+
+    $default  reduce usando la regla 14 (lista_tipo)
+
+
+Estado 61
+
+   13 lista_tipo: STRING_TYPE .
+
+    $default  reduce usando la regla 13 (lista_tipo)
+
+
+Estado 62
+
+   15 lista_tipo: BOOL_TYPE .
+
+    $default  reduce usando la regla 15 (lista_tipo)
+
+
+Estado 63
+
+    1 program: MAIN ParetOP ParetCL KEYOP comandos KEYCL . metodo
+
+    error        desplazar e ir al estado 57
+    INT_TYPE     desplazar e ir al estado 58
+    FLOAT_TYPE   desplazar e ir al estado 59
+    LETRA_TYPE   desplazar e ir al estado 60
+    STRING_TYPE  desplazar e ir al estado 61
+    BOOL_TYPE    desplazar e ir al estado 62
+
+    $end  reduce usando la regla 6 (metodo)
+
+    metodo      ir al estado 94
+    lista_tipo  ir al estado 65
+
+
+Estado 64
+
+    3 program: MAIN ParetOP ParetCL KEYOP comandos metodo . comandos KEYCL metodo
+
+    error        desplazar e ir al estado 25
+    IF           desplazar e ir al estado 26
+    DO           desplazar e ir al estado 27
+    WHILE        desplazar e ir al estado 28
+    FOR          desplazar e ir al estado 29
+    PRINT        desplazar e ir al estado 30
+    RETURN       desplazar e ir al estado 31
+    INT_TYPE     desplazar e ir al estado 6
+    FLOAT_TYPE   desplazar e ir al estado 7
+    LETRA_TYPE   desplazar e ir al estado 8
+    STRING_TYPE  desplazar e ir al estado 9
+    BOOL_TYPE    desplazar e ir al estado 10
+    ID           desplazar e ir al estado 32
+    KEYOP        desplazar e ir al estado 33
+
+    KEYCL  reduce usando la regla 19 (command_list)
+
+    comandos        ir al estado 95
+    command_list    ir al estado 35
+    command         ir al estado 36
+    bucle           ir al estado 37
+    comando_simple  ir al estado 38
+    controlF        ir al estado 39
+    controlFor      ir al estado 40
+    controlWhile    ir al estado 41
+    controlDo       ir al estado 42
+    controlWhileDo  ir al estado 43
+    declaration     ir al estado 44
+    attrib          ir al estado 45
+    i_attrib        ir al estado 46
+
+
+Estado 65
+
+    7 metodo: lista_tipo . ID ParetOP ParetCL KEYOP comandos KEYCL metodo
+    8       | lista_tipo . ID ParetOP ParetCL KEYOP comandos metodo comandos KEYCL metodo
+    9       | lista_tipo . ID ParetOP declaration ParetCL KEYOP comandos KEYCL metodo
+
+    ID  desplazar e ir al estado 96
+
+
+Estado 66
+
+   18 command_list: command command_list .
+
+    $default  reduce usando la regla 18 (command_list)
+
+
+Estado 67
+
+   20 command: comando_simple FinCommand .
+
+    $default  reduce usando la regla 20 (command)
+
+
+Estado 68
+
+    2 program: MAIN ParetOP declaration ParetCL KEYOP comandos . KEYCL metodo
+    4        | MAIN ParetOP declaration ParetCL KEYOP comandos . metodo comandos KEYCL metodo
+
+    error        desplazar e ir al estado 57
+    INT_TYPE     desplazar e ir al estado 58
+    FLOAT_TYPE   desplazar e ir al estado 59
+    LETRA_TYPE   desplazar e ir al estado 60
+    STRING_TYPE  desplazar e ir al estado 61
+    BOOL_TYPE    desplazar e ir al estado 62
+    KEYCL        desplazar e ir al estado 97
+
+    error        [reduce usando la regla 6 (metodo)]
+    IF           reduce usando la regla 6 (metodo)
+    DO           reduce usando la regla 6 (metodo)
+    WHILE        reduce usando la regla 6 (metodo)
+    FOR          reduce usando la regla 6 (metodo)
+    PRINT        reduce usando la regla 6 (metodo)
+    RETURN       reduce usando la regla 6 (metodo)
+    INT_TYPE     [reduce usando la regla 6 (metodo)]
+    FLOAT_TYPE   [reduce usando la regla 6 (metodo)]
+    LETRA_TYPE   [reduce usando la regla 6 (metodo)]
+    STRING_TYPE  [reduce usando la regla 6 (metodo)]
+    BOOL_TYPE    [reduce usando la regla 6 (metodo)]
+    ID           reduce usando la regla 6 (metodo)
+    KEYOP        reduce usando la regla 6 (metodo)
+    KEYCL        [reduce usando la regla 6 (metodo)]
+
+    metodo      ir al estado 98
+    lista_tipo  ir al estado 65
+
+
+Estado 69
+
+   69 l_factor: INTEGER .
+
+    $default  reduce usando la regla 69 (l_factor)
+
+
+Estado 70
+
+   70 l_factor: FLOTANTE .
+
+    $default  reduce usando la regla 70 (l_factor)
+
+
+Estado 71
+
+   71 l_factor: ID .
+
+    $default  reduce usando la regla 71 (l_factor)
+
+
+Estado 72
+
+   66 l_expr: NOT . l_expr
+
+    INTEGER   desplazar e ir al estado 69
+    FLOTANTE  desplazar e ir al estado 70
+    ID        desplazar e ir al estado 71
+    NOT       desplazar e ir al estado 72
+    ParetOP   desplazar e ir al estado 73
+
+    l_expr    ir al estado 99
+    l_factor  ir al estado 75
+
+
+Estado 73
+
+   68 l_factor: ParetOP . l_expr ParetOP
+
+    INTEGER   desplazar e ir al estado 69
+    FLOTANTE  desplazar e ir al estado 70
+    ID        desplazar e ir al estado 71
+    NOT       desplazar e ir al estado 72
+    ParetOP   desplazar e ir al estado 73
+
+    l_expr    ir al estado 100
+    l_factor  ir al estado 75
+
+
+Estado 74
+
+   32 controlF: IF ParetOP l_expr . ParetCL KEYOP comandos KEYCL controlElse
+   61 l_expr: l_expr . EQL l_factor
+   62       | l_expr . AND l_factor
+   63       | l_expr . OR l_factor
+   64       | l_expr . MAYOR_QUE l_factor
+   65       | l_expr . MENOR_QUE l_factor
+
+    EQL        desplazar e ir al estado 101
+    MENOR_QUE  desplazar e ir al estado 102
+    MAYOR_QUE  desplazar e ir al estado 103
+    AND        desplazar e ir al estado 104
+    OR         desplazar e ir al estado 105
+    ParetCL    desplazar e ir al estado 106
+
+
+Estado 75
+
+   67 l_expr: l_factor .
+
+    $default  reduce usando la regla 67 (l_expr)
+
+
+Estado 76
+
+   42 controlDo: DO KEYOP comandos . KEYCL WHILE ParetOP l_expr ParetCL FinCommand
+
+    KEYCL  desplazar e ir al estado 107
+
+
+Estado 77
+
+   41 controlWhile: WHILE ParetOP l_expr . ParetCL KEYOP comandos KEYCL
+   43 controlWhileDo: WHILE ParetOP l_expr . ParetCL DO KEYOP comandos KEYCL
+   61 l_expr: l_expr . EQL l_factor
+   62       | l_expr . AND l_factor
+   63       | l_expr . OR l_factor
+   64       | l_expr . MAYOR_QUE l_factor
+   65       | l_expr . MENOR_QUE l_factor
+
+    EQL        desplazar e ir al estado 101
+    MENOR_QUE  desplazar e ir al estado 102
+    MAYOR_QUE  desplazar e ir al estado 103
+    AND        desplazar e ir al estado 104
+    OR         desplazar e ir al estado 105
+    ParetCL    desplazar e ir al estado 108
+
+
+Estado 78
+
+   55 attrib: error .
+
+    $default  reduce usando la regla 55 (attrib)
+
+
+Estado 79
+
+   35 controlFor: FOR ParetOP ffirst . FinCommand l_expr FinCommand fthird ParetCL KEYOP comandos KEYCL
+
+    FinCommand  desplazar e ir al estado 109
+
+
+Estado 80
+
+   37 ffirst: attrib_list .
+
+    $default  reduce usando la regla 37 (ffirst)
+
+
+Estado 81
+
+   49 attrib_list: attrib . ',' attrib_list
+   50            | attrib .
+
+    ','  desplazar e ir al estado 110
+
+    $default  reduce usando la regla 50 (attrib_list)
+
+
+Estado 82
+
+   60 c_expr: CHAR .
+
+    $default  reduce usando la regla 60 (c_expr)
+
+
+Estado 83
+
+   59 t_expr: STRING .
+
+    $default  reduce usando la regla 59 (t_expr)
+
+
+Estado 84
+
+   79 g_factor: INTEGER .
+
+    $default  reduce usando la regla 79 (g_factor)
+
+
+Estado 85
+
+   80 g_factor: FLOTANTE .
+
+    $default  reduce usando la regla 80 (g_factor)
+
+
+Estado 86
+
+   54 attrib: ID '=' ID .
+
+    $default  reduce usando la regla 54 (attrib)
+
+
+Estado 87
+
+   78 g_factor: ParetOP . g_expr ParetOP
+
+    INTEGER   desplazar e ir al estado 84
+    FLOTANTE  desplazar e ir al estado 85
+    ParetOP   desplazar e ir al estado 87
+
+    g_expr    ir al estado 111
+    g_term    ir al estado 91
+    g_factor  ir al estado 92
+
+
+Estado 88
+
+   57 i_attrib: ID '=' t_expr .
+
+    $default  reduce usando la regla 57 (i_attrib)
+
+
+Estado 89
+
+   58 i_attrib: ID '=' c_expr .
+
+    $default  reduce usando la regla 58 (i_attrib)
+
+
+Estado 90
+
+   56 i_attrib: ID '=' g_expr .
+   72 g_expr: g_expr . '+' g_term
+   73       | g_expr . '-' g_term
+
+    '+'  desplazar e ir al estado 112
+    '-'  desplazar e ir al estado 113
+
+    $default  reduce usando la regla 56 (i_attrib)
+
+
+Estado 91
+
+   74 g_expr: g_term .
+   75 g_term: g_term . '*' g_factor
+   76       | g_term . '/' g_factor
+
+    '*'  desplazar e ir al estado 114
+    '/'  desplazar e ir al estado 115
+
+    $default  reduce usando la regla 74 (g_expr)
+
+
+Estado 92
+
+   77 g_term: g_factor .
+
+    $default  reduce usando la regla 77 (g_term)
+
+
+Estado 93
+
+   17 command_list: KEYOP command_list KEYCL .
+
+    $default  reduce usando la regla 17 (command_list)
+
+
+Estado 94
+
+    1 program: MAIN ParetOP ParetCL KEYOP comandos KEYCL metodo .
+
+    $default  reduce usando la regla 1 (program)
+
+
+Estado 95
+
+    3 program: MAIN ParetOP ParetCL KEYOP comandos metodo comandos . KEYCL metodo
+
+    KEYCL  desplazar e ir al estado 116
+
+
+Estado 96
+
+    7 metodo: lista_tipo ID . ParetOP ParetCL KEYOP comandos KEYCL metodo
+    8       | lista_tipo ID . ParetOP ParetCL KEYOP comandos metodo comandos KEYCL metodo
+    9       | lista_tipo ID . ParetOP declaration ParetCL KEYOP comandos KEYCL metodo
+
+    ParetOP  desplazar e ir al estado 117
+
+
+Estado 97
+
+    2 program: MAIN ParetOP declaration ParetCL KEYOP comandos KEYCL . metodo
+
+    error        desplazar e ir al estado 57
+    INT_TYPE     desplazar e ir al estado 58
+    FLOAT_TYPE   desplazar e ir al estado 59
+    LETRA_TYPE   desplazar e ir al estado 60
+    STRING_TYPE  desplazar e ir al estado 61
+    BOOL_TYPE    desplazar e ir al estado 62
+
+    $end  reduce usando la regla 6 (metodo)
+
+    metodo      ir al estado 118
+    lista_tipo  ir al estado 65
+
+
+Estado 98
+
+    4 program: MAIN ParetOP declaration ParetCL KEYOP comandos metodo . comandos KEYCL metodo
+
+    error        desplazar e ir al estado 25
+    IF           desplazar e ir al estado 26
+    DO           desplazar e ir al estado 27
+    WHILE        desplazar e ir al estado 28
+    FOR          desplazar e ir al estado 29
+    PRINT        desplazar e ir al estado 30
+    RETURN       desplazar e ir al estado 31
+    INT_TYPE     desplazar e ir al estado 6
+    FLOAT_TYPE   desplazar e ir al estado 7
+    LETRA_TYPE   desplazar e ir al estado 8
+    STRING_TYPE  desplazar e ir al estado 9
+    BOOL_TYPE    desplazar e ir al estado 10
+    ID           desplazar e ir al estado 32
+    KEYOP        desplazar e ir al estado 33
+
+    KEYCL  reduce usando la regla 19 (command_list)
+
+    comandos        ir al estado 119
+    command_list    ir al estado 35
+    command         ir al estado 36
+    bucle           ir al estado 37
+    comando_simple  ir al estado 38
+    controlF        ir al estado 39
+    controlFor      ir al estado 40
+    controlWhile    ir al estado 41
+    controlDo       ir al estado 42
+    controlWhileDo  ir al estado 43
+    declaration     ir al estado 44
+    attrib          ir al estado 45
+    i_attrib        ir al estado 46
+
+
+Estado 99
+
+   61 l_expr: l_expr . EQL l_factor
+   62       | l_expr . AND l_factor
+   63       | l_expr . OR l_factor
+   64       | l_expr . MAYOR_QUE l_factor
+   65       | l_expr . MENOR_QUE l_factor
+   66       | NOT l_expr .
+
+    $default  reduce usando la regla 66 (l_expr)
+
+
+Estado 100
+
+   61 l_expr: l_expr . EQL l_factor
+   62       | l_expr . AND l_factor
+   63       | l_expr . OR l_factor
+   64       | l_expr . MAYOR_QUE l_factor
+   65       | l_expr . MENOR_QUE l_factor
+   68 l_factor: ParetOP l_expr . ParetOP
+
+    EQL        desplazar e ir al estado 101
+    MENOR_QUE  desplazar e ir al estado 102
+    MAYOR_QUE  desplazar e ir al estado 103
+    AND        desplazar e ir al estado 104
+    OR         desplazar e ir al estado 105
+    ParetOP    desplazar e ir al estado 120
+
+
+Estado 101
+
+   61 l_expr: l_expr EQL . l_factor
+
+    INTEGER   desplazar e ir al estado 69
+    FLOTANTE  desplazar e ir al estado 70
+    ID        desplazar e ir al estado 71
+    ParetOP   desplazar e ir al estado 73
+
+    l_factor  ir al estado 121
+
+
+Estado 102
+
+   65 l_expr: l_expr MENOR_QUE . l_factor
+
+    INTEGER   desplazar e ir al estado 69
+    FLOTANTE  desplazar e ir al estado 70
+    ID        desplazar e ir al estado 71
+    ParetOP   desplazar e ir al estado 73
+
+    l_factor  ir al estado 122
+
+
+Estado 103
+
+   64 l_expr: l_expr MAYOR_QUE . l_factor
+
+    INTEGER   desplazar e ir al estado 69
+    FLOTANTE  desplazar e ir al estado 70
+    ID        desplazar e ir al estado 71
+    ParetOP   desplazar e ir al estado 73
+
+    l_factor  ir al estado 123
+
+
+Estado 104
+
+   62 l_expr: l_expr AND . l_factor
+
+    INTEGER   desplazar e ir al estado 69
+    FLOTANTE  desplazar e ir al estado 70
+    ID        desplazar e ir al estado 71
+    ParetOP   desplazar e ir al estado 73
+
+    l_factor  ir al estado 124
+
+
+Estado 105
+
+   63 l_expr: l_expr OR . l_factor
+
+    INTEGER   desplazar e ir al estado 69
+    FLOTANTE  desplazar e ir al estado 70
+    ID        desplazar e ir al estado 71
+    ParetOP   desplazar e ir al estado 73
+
+    l_factor  ir al estado 125
+
+
+Estado 106
+
+   32 controlF: IF ParetOP l_expr ParetCL . KEYOP comandos KEYCL controlElse
+
+    KEYOP  desplazar e ir al estado 126
+
+
+Estado 107
+
+   42 controlDo: DO KEYOP comandos KEYCL . WHILE ParetOP l_expr ParetCL FinCommand
+
+    WHILE  desplazar e ir al estado 127
+
+
+Estado 108
+
+   41 controlWhile: WHILE ParetOP l_expr ParetCL . KEYOP comandos KEYCL
+   43 controlWhileDo: WHILE ParetOP l_expr ParetCL . DO KEYOP comandos KEYCL
+
+    DO     desplazar e ir al estado 128
+    KEYOP  desplazar e ir al estado 129
+
+
+Estado 109
+
+   35 controlFor: FOR ParetOP ffirst FinCommand . l_expr FinCommand fthird ParetCL KEYOP comandos KEYCL
+
+    INTEGER   desplazar e ir al estado 69
+    FLOTANTE  desplazar e ir al estado 70
+    ID        desplazar e ir al estado 71
+    NOT       desplazar e ir al estado 72
+    ParetOP   desplazar e ir al estado 73
+
+    l_expr    ir al estado 130
+    l_factor  ir al estado 75
+
+
+Estado 110
+
+   49 attrib_list: attrib ',' . attrib_list
+
+    error  desplazar e ir al estado 78
+    ID     desplazar e ir al estado 32
+
+    attrib_list  ir al estado 131
+    attrib       ir al estado 81
+    i_attrib     ir al estado 46
+
+
+Estado 111
+
+   72 g_expr: g_expr . '+' g_term
+   73       | g_expr . '-' g_term
+   78 g_factor: ParetOP g_expr . ParetOP
+
+    ParetOP  desplazar e ir al estado 132
+    '+'      desplazar e ir al estado 112
+    '-'      desplazar e ir al estado 113
+
+
+Estado 112
+
+   72 g_expr: g_expr '+' . g_term
+
+    INTEGER   desplazar e ir al estado 84
+    FLOTANTE  desplazar e ir al estado 85
+    ParetOP   desplazar e ir al estado 87
+
+    g_term    ir al estado 133
+    g_factor  ir al estado 92
+
+
+Estado 113
+
+   73 g_expr: g_expr '-' . g_term
+
+    INTEGER   desplazar e ir al estado 84
+    FLOTANTE  desplazar e ir al estado 85
+    ParetOP   desplazar e ir al estado 87
+
+    g_term    ir al estado 134
+    g_factor  ir al estado 92
+
+
+Estado 114
+
+   75 g_term: g_term '*' . g_factor
+
+    INTEGER   desplazar e ir al estado 84
+    FLOTANTE  desplazar e ir al estado 85
+    ParetOP   desplazar e ir al estado 87
+
+    g_factor  ir al estado 135
+
+
+Estado 115
+
+   76 g_term: g_term '/' . g_factor
+
+    INTEGER   desplazar e ir al estado 84
+    FLOTANTE  desplazar e ir al estado 85
+    ParetOP   desplazar e ir al estado 87
+
+    g_factor  ir al estado 136
+
+
+Estado 116
+
+    3 program: MAIN ParetOP ParetCL KEYOP comandos metodo comandos KEYCL . metodo
+
+    error        desplazar e ir al estado 57
+    INT_TYPE     desplazar e ir al estado 58
+    FLOAT_TYPE   desplazar e ir al estado 59
+    LETRA_TYPE   desplazar e ir al estado 60
+    STRING_TYPE  desplazar e ir al estado 61
+    BOOL_TYPE    desplazar e ir al estado 62
+
+    $end  reduce usando la regla 6 (metodo)
+
+    metodo      ir al estado 137
+    lista_tipo  ir al estado 65
+
+
+Estado 117
+
+    7 metodo: lista_tipo ID ParetOP . ParetCL KEYOP comandos KEYCL metodo
+    8       | lista_tipo ID ParetOP . ParetCL KEYOP comandos metodo comandos KEYCL metodo
+    9       | lista_tipo ID ParetOP . declaration ParetCL KEYOP comandos KEYCL metodo
+
+    INT_TYPE     desplazar e ir al estado 6
+    FLOAT_TYPE   desplazar e ir al estado 7
+    LETRA_TYPE   desplazar e ir al estado 8
+    STRING_TYPE  desplazar e ir al estado 9
+    BOOL_TYPE    desplazar e ir al estado 10
+    ParetCL      desplazar e ir al estado 138
+
+    declaration  ir al estado 139
+
+
+Estado 118
+
+    2 program: MAIN ParetOP declaration ParetCL KEYOP comandos KEYCL metodo .
+
+    $default  reduce usando la regla 2 (program)
+
+
+Estado 119
+
+    4 program: MAIN ParetOP declaration ParetCL KEYOP comandos metodo comandos . KEYCL metodo
+
+    KEYCL  desplazar e ir al estado 140
+
+
+Estado 120
+
+   68 l_factor: ParetOP l_expr ParetOP .
+
+    $default  reduce usando la regla 68 (l_factor)
+
+
+Estado 121
+
+   61 l_expr: l_expr EQL l_factor .
+
+    $default  reduce usando la regla 61 (l_expr)
+
+
+Estado 122
+
+   65 l_expr: l_expr MENOR_QUE l_factor .
+
+    $default  reduce usando la regla 65 (l_expr)
+
+
+Estado 123
+
+   64 l_expr: l_expr MAYOR_QUE l_factor .
+
+    $default  reduce usando la regla 64 (l_expr)
+
+
+Estado 124
+
+   62 l_expr: l_expr AND l_factor .
+
+    $default  reduce usando la regla 62 (l_expr)
+
+
+Estado 125
+
+   63 l_expr: l_expr OR l_factor .
+
+    $default  reduce usando la regla 63 (l_expr)
+
+
+Estado 126
+
+   32 controlF: IF ParetOP l_expr ParetCL KEYOP . comandos KEYCL controlElse
+
+    error        desplazar e ir al estado 25
+    IF           desplazar e ir al estado 26
+    DO           desplazar e ir al estado 27
+    WHILE        desplazar e ir al estado 28
+    FOR          desplazar e ir al estado 29
+    PRINT        desplazar e ir al estado 30
+    RETURN       desplazar e ir al estado 31
+    INT_TYPE     desplazar e ir al estado 6
+    FLOAT_TYPE   desplazar e ir al estado 7
+    LETRA_TYPE   desplazar e ir al estado 8
+    STRING_TYPE  desplazar e ir al estado 9
+    BOOL_TYPE    desplazar e ir al estado 10
+    ID           desplazar e ir al estado 32
+    KEYOP        desplazar e ir al estado 33
+
+    KEYCL  reduce usando la regla 19 (command_list)
+
+    comandos        ir al estado 141
+    command_list    ir al estado 35
+    command         ir al estado 36
+    bucle           ir al estado 37
+    comando_simple  ir al estado 38
+    controlF        ir al estado 39
+    controlFor      ir al estado 40
+    controlWhile    ir al estado 41
+    controlDo       ir al estado 42
+    controlWhileDo  ir al estado 43
+    declaration     ir al estado 44
+    attrib          ir al estado 45
+    i_attrib        ir al estado 46
+
+
+Estado 127
+
+   42 controlDo: DO KEYOP comandos KEYCL WHILE . ParetOP l_expr ParetCL FinCommand
+
+    ParetOP  desplazar e ir al estado 142
+
+
+Estado 128
+
+   43 controlWhileDo: WHILE ParetOP l_expr ParetCL DO . KEYOP comandos KEYCL
+
+    KEYOP  desplazar e ir al estado 143
+
+
+Estado 129
+
+   41 controlWhile: WHILE ParetOP l_expr ParetCL KEYOP . comandos KEYCL
+
+    error        desplazar e ir al estado 25
+    IF           desplazar e ir al estado 26
+    DO           desplazar e ir al estado 27
+    WHILE        desplazar e ir al estado 28
+    FOR          desplazar e ir al estado 29
+    PRINT        desplazar e ir al estado 30
+    RETURN       desplazar e ir al estado 31
+    INT_TYPE     desplazar e ir al estado 6
+    FLOAT_TYPE   desplazar e ir al estado 7
+    LETRA_TYPE   desplazar e ir al estado 8
+    STRING_TYPE  desplazar e ir al estado 9
+    BOOL_TYPE    desplazar e ir al estado 10
+    ID           desplazar e ir al estado 32
+    KEYOP        desplazar e ir al estado 33
+
+    KEYCL  reduce usando la regla 19 (command_list)
+
+    comandos        ir al estado 144
+    command_list    ir al estado 35
+    command         ir al estado 36
+    bucle           ir al estado 37
+    comando_simple  ir al estado 38
+    controlF        ir al estado 39
+    controlFor      ir al estado 40
+    controlWhile    ir al estado 41
+    controlDo       ir al estado 42
+    controlWhileDo  ir al estado 43
+    declaration     ir al estado 44
+    attrib          ir al estado 45
+    i_attrib        ir al estado 46
+
+
+Estado 130
+
+   35 controlFor: FOR ParetOP ffirst FinCommand l_expr . FinCommand fthird ParetCL KEYOP comandos KEYCL
+   61 l_expr: l_expr . EQL l_factor
+   62       | l_expr . AND l_factor
+   63       | l_expr . OR l_factor
+   64       | l_expr . MAYOR_QUE l_factor
+   65       | l_expr . MENOR_QUE l_factor
+
+    EQL         desplazar e ir al estado 101
+    MENOR_QUE   desplazar e ir al estado 102
+    MAYOR_QUE   desplazar e ir al estado 103
+    AND         desplazar e ir al estado 104
+    OR          desplazar e ir al estado 105
+    FinCommand  desplazar e ir al estado 145
+
+
+Estado 131
+
+   49 attrib_list: attrib ',' attrib_list .
+
+    $default  reduce usando la regla 49 (attrib_list)
+
+
+Estado 132
+
+   78 g_factor: ParetOP g_expr ParetOP .
+
+    $default  reduce usando la regla 78 (g_factor)
+
+
+Estado 133
+
+   72 g_expr: g_expr '+' g_term .
+   75 g_term: g_term . '*' g_factor
+   76       | g_term . '/' g_factor
+
+    '*'  desplazar e ir al estado 114
+    '/'  desplazar e ir al estado 115
+
+    $default  reduce usando la regla 72 (g_expr)
+
+
+Estado 134
+
+   73 g_expr: g_expr '-' g_term .
+   75 g_term: g_term . '*' g_factor
+   76       | g_term . '/' g_factor
+
+    '*'  desplazar e ir al estado 114
+    '/'  desplazar e ir al estado 115
+
+    $default  reduce usando la regla 73 (g_expr)
+
+
+Estado 135
+
+   75 g_term: g_term '*' g_factor .
+
+    $default  reduce usando la regla 75 (g_term)
+
+
+Estado 136
+
+   76 g_term: g_term '/' g_factor .
+
+    $default  reduce usando la regla 76 (g_term)
+
+
+Estado 137
+
+    3 program: MAIN ParetOP ParetCL KEYOP comandos metodo comandos KEYCL metodo .
+
+    $default  reduce usando la regla 3 (program)
+
+
+Estado 138
+
+    7 metodo: lista_tipo ID ParetOP ParetCL . KEYOP comandos KEYCL metodo
+    8       | lista_tipo ID ParetOP ParetCL . KEYOP comandos metodo comandos KEYCL metodo
+
+    KEYOP  desplazar e ir al estado 146
+
+
+Estado 139
+
+    9 metodo: lista_tipo ID ParetOP declaration . ParetCL KEYOP comandos KEYCL metodo
+
+    ParetCL  desplazar e ir al estado 147
+
+
+Estado 140
+
+    4 program: MAIN ParetOP declaration ParetCL KEYOP comandos metodo comandos KEYCL . metodo
+
+    error        desplazar e ir al estado 57
+    INT_TYPE     desplazar e ir al estado 58
+    FLOAT_TYPE   desplazar e ir al estado 59
+    LETRA_TYPE   desplazar e ir al estado 60
+    STRING_TYPE  desplazar e ir al estado 61
+    BOOL_TYPE    desplazar e ir al estado 62
+
+    $end  reduce usando la regla 6 (metodo)
+
+    metodo      ir al estado 148
+    lista_tipo  ir al estado 65
+
+
+Estado 141
+
+   32 controlF: IF ParetOP l_expr ParetCL KEYOP comandos . KEYCL controlElse
+
+    KEYCL  desplazar e ir al estado 149
+
+
+Estado 142
+
+   42 controlDo: DO KEYOP comandos KEYCL WHILE ParetOP . l_expr ParetCL FinCommand
+
+    INTEGER   desplazar e ir al estado 69
+    FLOTANTE  desplazar e ir al estado 70
+    ID        desplazar e ir al estado 71
+    NOT       desplazar e ir al estado 72
+    ParetOP   desplazar e ir al estado 73
+
+    l_expr    ir al estado 150
+    l_factor  ir al estado 75
+
+
+Estado 143
+
+   43 controlWhileDo: WHILE ParetOP l_expr ParetCL DO KEYOP . comandos KEYCL
+
+    error        desplazar e ir al estado 25
+    IF           desplazar e ir al estado 26
+    DO           desplazar e ir al estado 27
+    WHILE        desplazar e ir al estado 28
+    FOR          desplazar e ir al estado 29
+    PRINT        desplazar e ir al estado 30
+    RETURN       desplazar e ir al estado 31
+    INT_TYPE     desplazar e ir al estado 6
+    FLOAT_TYPE   desplazar e ir al estado 7
+    LETRA_TYPE   desplazar e ir al estado 8
+    STRING_TYPE  desplazar e ir al estado 9
+    BOOL_TYPE    desplazar e ir al estado 10
+    ID           desplazar e ir al estado 32
+    KEYOP        desplazar e ir al estado 33
+
+    KEYCL  reduce usando la regla 19 (command_list)
+
+    comandos        ir al estado 151
+    command_list    ir al estado 35
+    command         ir al estado 36
+    bucle           ir al estado 37
+    comando_simple  ir al estado 38
+    controlF        ir al estado 39
+    controlFor      ir al estado 40
+    controlWhile    ir al estado 41
+    controlDo       ir al estado 42
+    controlWhileDo  ir al estado 43
+    declaration     ir al estado 44
+    attrib          ir al estado 45
+    i_attrib        ir al estado 46
+
+
+Estado 144
+
+   41 controlWhile: WHILE ParetOP l_expr ParetCL KEYOP comandos . KEYCL
+
+    KEYCL  desplazar e ir al estado 152
+
+
+Estado 145
+
+   35 controlFor: FOR ParetOP ffirst FinCommand l_expr FinCommand . fthird ParetCL KEYOP comandos KEYCL
+
+    error        desplazar e ir al estado 78
+    PRINT        desplazar e ir al estado 30
+    RETURN       desplazar e ir al estado 31
+    INT_TYPE     desplazar e ir al estado 6
+    FLOAT_TYPE   desplazar e ir al estado 7
+    LETRA_TYPE   desplazar e ir al estado 8
+    STRING_TYPE  desplazar e ir al estado 9
+    BOOL_TYPE    desplazar e ir al estado 10
+    ID           desplazar e ir al estado 32
+
+    ParetCL  reduce usando la regla 38 (fthird)
+
+    comando_simple  ir al estado 153
+    fthird          ir al estado 154
+    declaration     ir al estado 44
+    attrib          ir al estado 45
+    i_attrib        ir al estado 46
+
+
+Estado 146
+
+    7 metodo: lista_tipo ID ParetOP ParetCL KEYOP . comandos KEYCL metodo
+    8       | lista_tipo ID ParetOP ParetCL KEYOP . comandos metodo comandos KEYCL metodo
+
+    error        desplazar e ir al estado 25
+    IF           desplazar e ir al estado 26
+    DO           desplazar e ir al estado 27
+    WHILE        desplazar e ir al estado 28
+    FOR          desplazar e ir al estado 29
+    PRINT        desplazar e ir al estado 30
+    RETURN       desplazar e ir al estado 31
+    INT_TYPE     desplazar e ir al estado 6
+    FLOAT_TYPE   desplazar e ir al estado 7
+    LETRA_TYPE   desplazar e ir al estado 8
+    STRING_TYPE  desplazar e ir al estado 9
+    BOOL_TYPE    desplazar e ir al estado 10
+    ID           desplazar e ir al estado 32
+    KEYOP        desplazar e ir al estado 33
+
+    error        [reduce usando la regla 19 (command_list)]
+    IF           [reduce usando la regla 19 (command_list)]
+    DO           [reduce usando la regla 19 (command_list)]
+    WHILE        [reduce usando la regla 19 (command_list)]
+    FOR          [reduce usando la regla 19 (command_list)]
+    PRINT        [reduce usando la regla 19 (command_list)]
+    RETURN       [reduce usando la regla 19 (command_list)]
+    INT_TYPE     [reduce usando la regla 19 (command_list)]
+    FLOAT_TYPE   [reduce usando la regla 19 (command_list)]
+    LETRA_TYPE   [reduce usando la regla 19 (command_list)]
+    STRING_TYPE  [reduce usando la regla 19 (command_list)]
+    BOOL_TYPE    [reduce usando la regla 19 (command_list)]
+    ID           [reduce usando la regla 19 (command_list)]
+    KEYOP        [reduce usando la regla 19 (command_list)]
+    KEYCL        reduce usando la regla 19 (command_list)
+
+    comandos        ir al estado 155
+    command_list    ir al estado 35
+    command         ir al estado 36
+    bucle           ir al estado 37
+    comando_simple  ir al estado 38
+    controlF        ir al estado 39
+    controlFor      ir al estado 40
+    controlWhile    ir al estado 41
+    controlDo       ir al estado 42
+    controlWhileDo  ir al estado 43
+    declaration     ir al estado 44
+    attrib          ir al estado 45
+    i_attrib        ir al estado 46
+
+
+Estado 147
+
+    9 metodo: lista_tipo ID ParetOP declaration ParetCL . KEYOP comandos KEYCL metodo
+
+    KEYOP  desplazar e ir al estado 156
+
+
+Estado 148
+
+    4 program: MAIN ParetOP declaration ParetCL KEYOP comandos metodo comandos KEYCL metodo .
+
+    $default  reduce usando la regla 4 (program)
+
+
+Estado 149
+
+   32 controlF: IF ParetOP l_expr ParetCL KEYOP comandos KEYCL . controlElse
+
+    ELSE  desplazar e ir al estado 157
+
+    $default  reduce usando la regla 33 (controlElse)
+
+    controlElse  ir al estado 158
+
+
+Estado 150
+
+   42 controlDo: DO KEYOP comandos KEYCL WHILE ParetOP l_expr . ParetCL FinCommand
+   61 l_expr: l_expr . EQL l_factor
+   62       | l_expr . AND l_factor
+   63       | l_expr . OR l_factor
+   64       | l_expr . MAYOR_QUE l_factor
+   65       | l_expr . MENOR_QUE l_factor
+
+    EQL        desplazar e ir al estado 101
+    MENOR_QUE  desplazar e ir al estado 102
+    MAYOR_QUE  desplazar e ir al estado 103
+    AND        desplazar e ir al estado 104
+    OR         desplazar e ir al estado 105
+    ParetCL    desplazar e ir al estado 159
+
+
+Estado 151
+
+   43 controlWhileDo: WHILE ParetOP l_expr ParetCL DO KEYOP comandos . KEYCL
+
+    KEYCL  desplazar e ir al estado 160
+
+
+Estado 152
+
+   41 controlWhile: WHILE ParetOP l_expr ParetCL KEYOP comandos KEYCL .
+
+    $default  reduce usando la regla 41 (controlWhile)
+
+
+Estado 153
+
+   39 fthird: comando_simple . COMA fthird
+   40       | comando_simple .
+
+    COMA  desplazar e ir al estado 161
+
+    $default  reduce usando la regla 40 (fthird)
+
+
+Estado 154
+
+   35 controlFor: FOR ParetOP ffirst FinCommand l_expr FinCommand fthird . ParetCL KEYOP comandos KEYCL
+
+    ParetCL  desplazar e ir al estado 162
+
+
+Estado 155
+
+    7 metodo: lista_tipo ID ParetOP ParetCL KEYOP comandos . KEYCL metodo
+    8       | lista_tipo ID ParetOP ParetCL KEYOP comandos . metodo comandos KEYCL metodo
+
+    error        desplazar e ir al estado 57
+    INT_TYPE     desplazar e ir al estado 58
+    FLOAT_TYPE   desplazar e ir al estado 59
+    LETRA_TYPE   desplazar e ir al estado 60
+    STRING_TYPE  desplazar e ir al estado 61
+    BOOL_TYPE    desplazar e ir al estado 62
+    KEYCL        desplazar e ir al estado 163
+
+    error        [reduce usando la regla 6 (metodo)]
+    IF           reduce usando la regla 6 (metodo)
+    DO           reduce usando la regla 6 (metodo)
+    WHILE        reduce usando la regla 6 (metodo)
+    FOR          reduce usando la regla 6 (metodo)
+    PRINT        reduce usando la regla 6 (metodo)
+    RETURN       reduce usando la regla 6 (metodo)
+    INT_TYPE     [reduce usando la regla 6 (metodo)]
+    FLOAT_TYPE   [reduce usando la regla 6 (metodo)]
+    LETRA_TYPE   [reduce usando la regla 6 (metodo)]
+    STRING_TYPE  [reduce usando la regla 6 (metodo)]
+    BOOL_TYPE    [reduce usando la regla 6 (metodo)]
+    ID           reduce usando la regla 6 (metodo)
+    KEYOP        reduce usando la regla 6 (metodo)
+    KEYCL        [reduce usando la regla 6 (metodo)]
+
+    metodo      ir al estado 164
+    lista_tipo  ir al estado 65
+
+
+Estado 156
+
+    9 metodo: lista_tipo ID ParetOP declaration ParetCL KEYOP . comandos KEYCL metodo
+
+    error        desplazar e ir al estado 25
+    IF           desplazar e ir al estado 26
+    DO           desplazar e ir al estado 27
+    WHILE        desplazar e ir al estado 28
+    FOR          desplazar e ir al estado 29
+    PRINT        desplazar e ir al estado 30
+    RETURN       desplazar e ir al estado 31
+    INT_TYPE     desplazar e ir al estado 6
+    FLOAT_TYPE   desplazar e ir al estado 7
+    LETRA_TYPE   desplazar e ir al estado 8
+    STRING_TYPE  desplazar e ir al estado 9
+    BOOL_TYPE    desplazar e ir al estado 10
+    ID           desplazar e ir al estado 32
+    KEYOP        desplazar e ir al estado 33
+
+    KEYCL  reduce usando la regla 19 (command_list)
+
+    comandos        ir al estado 165
+    command_list    ir al estado 35
+    command         ir al estado 36
+    bucle           ir al estado 37
+    comando_simple  ir al estado 38
+    controlF        ir al estado 39
+    controlFor      ir al estado 40
+    controlWhile    ir al estado 41
+    controlDo       ir al estado 42
+    controlWhileDo  ir al estado 43
+    declaration     ir al estado 44
+    attrib          ir al estado 45
+    i_attrib        ir al estado 46
+
+
+Estado 157
+
+   34 controlElse: ELSE . KEYOP comandos KEYCL
+
+    KEYOP  desplazar e ir al estado 166
+
+
+Estado 158
+
+   32 controlF: IF ParetOP l_expr ParetCL KEYOP comandos KEYCL controlElse .
+
+    $default  reduce usando la regla 32 (controlF)
+
+
+Estado 159
+
+   42 controlDo: DO KEYOP comandos KEYCL WHILE ParetOP l_expr ParetCL . FinCommand
+
+    FinCommand  desplazar e ir al estado 167
+
+
+Estado 160
+
+   43 controlWhileDo: WHILE ParetOP l_expr ParetCL DO KEYOP comandos KEYCL .
+
+    $default  reduce usando la regla 43 (controlWhileDo)
+
+
+Estado 161
+
+   39 fthird: comando_simple COMA . fthird
+
+    error        desplazar e ir al estado 78
+    PRINT        desplazar e ir al estado 30
+    RETURN       desplazar e ir al estado 31
+    INT_TYPE     desplazar e ir al estado 6
+    FLOAT_TYPE   desplazar e ir al estado 7
+    LETRA_TYPE   desplazar e ir al estado 8
+    STRING_TYPE  desplazar e ir al estado 9
+    BOOL_TYPE    desplazar e ir al estado 10
+    ID           desplazar e ir al estado 32
+
+    ParetCL  reduce usando la regla 38 (fthird)
+
+    comando_simple  ir al estado 153
+    fthird          ir al estado 168
+    declaration     ir al estado 44
+    attrib          ir al estado 45
+    i_attrib        ir al estado 46
+
+
+Estado 162
+
+   35 controlFor: FOR ParetOP ffirst FinCommand l_expr FinCommand fthird ParetCL . KEYOP comandos KEYCL
+
+    KEYOP  desplazar e ir al estado 169
+
+
+Estado 163
+
+    7 metodo: lista_tipo ID ParetOP ParetCL KEYOP comandos KEYCL . metodo
+
+    error        desplazar e ir al estado 57
+    INT_TYPE     desplazar e ir al estado 58
+    FLOAT_TYPE   desplazar e ir al estado 59
+    LETRA_TYPE   desplazar e ir al estado 60
+    STRING_TYPE  desplazar e ir al estado 61
+    BOOL_TYPE    desplazar e ir al estado 62
+
+    $end         reduce usando la regla 6 (metodo)
+    error        [reduce usando la regla 6 (metodo)]
+    IF           reduce usando la regla 6 (metodo)
+    DO           reduce usando la regla 6 (metodo)
+    WHILE        reduce usando la regla 6 (metodo)
+    FOR          reduce usando la regla 6 (metodo)
+    PRINT        reduce usando la regla 6 (metodo)
+    RETURN       reduce usando la regla 6 (metodo)
+    INT_TYPE     [reduce usando la regla 6 (metodo)]
+    FLOAT_TYPE   [reduce usando la regla 6 (metodo)]
+    LETRA_TYPE   [reduce usando la regla 6 (metodo)]
+    STRING_TYPE  [reduce usando la regla 6 (metodo)]
+    BOOL_TYPE    [reduce usando la regla 6 (metodo)]
+    ID           reduce usando la regla 6 (metodo)
+    KEYOP        reduce usando la regla 6 (metodo)
+    KEYCL        reduce usando la regla 6 (metodo)
+
+    metodo      ir al estado 170
+    lista_tipo  ir al estado 65
+
+
+Estado 164
+
+    8 metodo: lista_tipo ID ParetOP ParetCL KEYOP comandos metodo . comandos KEYCL metodo
+
+    error        desplazar e ir al estado 25
+    IF           desplazar e ir al estado 26
+    DO           desplazar e ir al estado 27
+    WHILE        desplazar e ir al estado 28
+    FOR          desplazar e ir al estado 29
+    PRINT        desplazar e ir al estado 30
+    RETURN       desplazar e ir al estado 31
+    INT_TYPE     desplazar e ir al estado 6
+    FLOAT_TYPE   desplazar e ir al estado 7
+    LETRA_TYPE   desplazar e ir al estado 8
+    STRING_TYPE  desplazar e ir al estado 9
+    BOOL_TYPE    desplazar e ir al estado 10
+    ID           desplazar e ir al estado 32
+    KEYOP        desplazar e ir al estado 33
+
+    KEYCL  reduce usando la regla 19 (command_list)
+
+    comandos        ir al estado 171
+    command_list    ir al estado 35
+    command         ir al estado 36
+    bucle           ir al estado 37
+    comando_simple  ir al estado 38
+    controlF        ir al estado 39
+    controlFor      ir al estado 40
+    controlWhile    ir al estado 41
+    controlDo       ir al estado 42
+    controlWhileDo  ir al estado 43
+    declaration     ir al estado 44
+    attrib          ir al estado 45
+    i_attrib        ir al estado 46
+
+
+Estado 165
+
+    9 metodo: lista_tipo ID ParetOP declaration ParetCL KEYOP comandos . KEYCL metodo
+
+    KEYCL  desplazar e ir al estado 172
+
+
+Estado 166
+
+   34 controlElse: ELSE KEYOP . comandos KEYCL
+
+    error        desplazar e ir al estado 25
+    IF           desplazar e ir al estado 26
+    DO           desplazar e ir al estado 27
+    WHILE        desplazar e ir al estado 28
+    FOR          desplazar e ir al estado 29
+    PRINT        desplazar e ir al estado 30
+    RETURN       desplazar e ir al estado 31
+    INT_TYPE     desplazar e ir al estado 6
+    FLOAT_TYPE   desplazar e ir al estado 7
+    LETRA_TYPE   desplazar e ir al estado 8
+    STRING_TYPE  desplazar e ir al estado 9
+    BOOL_TYPE    desplazar e ir al estado 10
+    ID           desplazar e ir al estado 32
+    KEYOP        desplazar e ir al estado 33
+
+    KEYCL  reduce usando la regla 19 (command_list)
+
+    comandos        ir al estado 173
+    command_list    ir al estado 35
+    command         ir al estado 36
+    bucle           ir al estado 37
+    comando_simple  ir al estado 38
+    controlF        ir al estado 39
+    controlFor      ir al estado 40
+    controlWhile    ir al estado 41
+    controlDo       ir al estado 42
+    controlWhileDo  ir al estado 43
+    declaration     ir al estado 44
+    attrib          ir al estado 45
+    i_attrib        ir al estado 46
+
+
+Estado 167
+
+   42 controlDo: DO KEYOP comandos KEYCL WHILE ParetOP l_expr ParetCL FinCommand .
+
+    $default  reduce usando la regla 42 (controlDo)
+
+
+Estado 168
+
+   39 fthird: comando_simple COMA fthird .
+
+    $default  reduce usando la regla 39 (fthird)
+
+
+Estado 169
+
+   35 controlFor: FOR ParetOP ffirst FinCommand l_expr FinCommand fthird ParetCL KEYOP . comandos KEYCL
+
+    error        desplazar e ir al estado 25
+    IF           desplazar e ir al estado 26
+    DO           desplazar e ir al estado 27
+    WHILE        desplazar e ir al estado 28
+    FOR          desplazar e ir al estado 29
+    PRINT        desplazar e ir al estado 30
+    RETURN       desplazar e ir al estado 31
+    INT_TYPE     desplazar e ir al estado 6
+    FLOAT_TYPE   desplazar e ir al estado 7
+    LETRA_TYPE   desplazar e ir al estado 8
+    STRING_TYPE  desplazar e ir al estado 9
+    BOOL_TYPE    desplazar e ir al estado 10
+    ID           desplazar e ir al estado 32
+    KEYOP        desplazar e ir al estado 33
+
+    KEYCL  reduce usando la regla 19 (command_list)
+
+    comandos        ir al estado 174
+    command_list    ir al estado 35
+    command         ir al estado 36
+    bucle           ir al estado 37
+    comando_simple  ir al estado 38
+    controlF        ir al estado 39
+    controlFor      ir al estado 40
+    controlWhile    ir al estado 41
+    controlDo       ir al estado 42
+    controlWhileDo  ir al estado 43
+    declaration     ir al estado 44
+    attrib          ir al estado 45
+    i_attrib        ir al estado 46
+
+
+Estado 170
+
+    7 metodo: lista_tipo ID ParetOP ParetCL KEYOP comandos KEYCL metodo .
+
+    $default  reduce usando la regla 7 (metodo)
+
+
+Estado 171
+
+    8 metodo: lista_tipo ID ParetOP ParetCL KEYOP comandos metodo comandos . KEYCL metodo
+
+    KEYCL  desplazar e ir al estado 175
+
+
+Estado 172
+
+    9 metodo: lista_tipo ID ParetOP declaration ParetCL KEYOP comandos KEYCL . metodo
+
+    error        desplazar e ir al estado 57
+    INT_TYPE     desplazar e ir al estado 58
+    FLOAT_TYPE   desplazar e ir al estado 59
+    LETRA_TYPE   desplazar e ir al estado 60
+    STRING_TYPE  desplazar e ir al estado 61
+    BOOL_TYPE    desplazar e ir al estado 62
+
+    $end         reduce usando la regla 6 (metodo)
+    error        [reduce usando la regla 6 (metodo)]
+    IF           reduce usando la regla 6 (metodo)
+    DO           reduce usando la regla 6 (metodo)
+    WHILE        reduce usando la regla 6 (metodo)
+    FOR          reduce usando la regla 6 (metodo)
+    PRINT        reduce usando la regla 6 (metodo)
+    RETURN       reduce usando la regla 6 (metodo)
+    INT_TYPE     [reduce usando la regla 6 (metodo)]
+    FLOAT_TYPE   [reduce usando la regla 6 (metodo)]
+    LETRA_TYPE   [reduce usando la regla 6 (metodo)]
+    STRING_TYPE  [reduce usando la regla 6 (metodo)]
+    BOOL_TYPE    [reduce usando la regla 6 (metodo)]
+    ID           reduce usando la regla 6 (metodo)
+    KEYOP        reduce usando la regla 6 (metodo)
+    KEYCL        reduce usando la regla 6 (metodo)
+
+    metodo      ir al estado 176
+    lista_tipo  ir al estado 65
+
+
+Estado 173
+
+   34 controlElse: ELSE KEYOP comandos . KEYCL
+
+    KEYCL  desplazar e ir al estado 177
+
+
+Estado 174
+
+   35 controlFor: FOR ParetOP ffirst FinCommand l_expr FinCommand fthird ParetCL KEYOP comandos . KEYCL
+
+    KEYCL  desplazar e ir al estado 178
+
+
+Estado 175
+
+    8 metodo: lista_tipo ID ParetOP ParetCL KEYOP comandos metodo comandos KEYCL . metodo
+
+    error        desplazar e ir al estado 57
+    INT_TYPE     desplazar e ir al estado 58
+    FLOAT_TYPE   desplazar e ir al estado 59
+    LETRA_TYPE   desplazar e ir al estado 60
+    STRING_TYPE  desplazar e ir al estado 61
+    BOOL_TYPE    desplazar e ir al estado 62
+
+    $end         reduce usando la regla 6 (metodo)
+    error        [reduce usando la regla 6 (metodo)]
+    IF           reduce usando la regla 6 (metodo)
+    DO           reduce usando la regla 6 (metodo)
+    WHILE        reduce usando la regla 6 (metodo)
+    FOR          reduce usando la regla 6 (metodo)
+    PRINT        reduce usando la regla 6 (metodo)
+    RETURN       reduce usando la regla 6 (metodo)
+    INT_TYPE     [reduce usando la regla 6 (metodo)]
+    FLOAT_TYPE   [reduce usando la regla 6 (metodo)]
+    LETRA_TYPE   [reduce usando la regla 6 (metodo)]
+    STRING_TYPE  [reduce usando la regla 6 (metodo)]
+    BOOL_TYPE    [reduce usando la regla 6 (metodo)]
+    ID           reduce usando la regla 6 (metodo)
+    KEYOP        reduce usando la regla 6 (metodo)
+    KEYCL        reduce usando la regla 6 (metodo)
+
+    metodo      ir al estado 179
+    lista_tipo  ir al estado 65
+
+
+Estado 176
+
+    9 metodo: lista_tipo ID ParetOP declaration ParetCL KEYOP comandos KEYCL metodo .
+
+    $default  reduce usando la regla 9 (metodo)
+
+
+Estado 177
+
+   34 controlElse: ELSE KEYOP comandos KEYCL .
+
+    $default  reduce usando la regla 34 (controlElse)
+
+
+Estado 178
+
+   35 controlFor: FOR ParetOP ffirst FinCommand l_expr FinCommand fthird ParetCL KEYOP comandos KEYCL .
+
+    $default  reduce usando la regla 35 (controlFor)
+
+
+Estado 179
+
+    8 metodo: lista_tipo ID ParetOP ParetCL KEYOP comandos metodo comandos KEYCL metodo .
+
+    $default  reduce usando la regla 8 (metodo)
