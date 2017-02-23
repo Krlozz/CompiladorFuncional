@@ -1,44 +1,40 @@
-main(int:q) {
+main(int:parametro1) {
+
 	// comentario de una sola línea	
 	/*
-	comentario multiples líneas
+	comentario múltiples líneas
 	*/
-	float:hola;
-	hola=8/5*5+2;
+	float:operaciones;
+	operaciones=8.0/5.4*5.4+2.0;
+	int:x1;
+	x1=5+2;
 	int:prueba;
 	int:prueba2;
-	prueba2=1;
-	int:prueba3;
-	float:prueba4;
-	prueba4=1.53e12;
-	string:palabra;
-	palabra="hola";
-	bool:vrd;
-	vrd=0;
-	char:as;
-	as='o';
+	prueba2=3;
+	float:prueba3;
+	float:decimal;
+	decimal=1.53e12;
 	
 	
-	if(hola<10.2){
-		hola=1.1;
+	if(operaciones>20.0){
+		operaciones=1.1;
 	} else {
-		hola=0;
+		operaciones=9.276856;
 	}
 
-	
+	do{
+		prueba3=4.24;
+	} while(x1==7);
 	
 	while(prueba2==3) do{
 		prueba=-2+1;
 	}
 
-	int yo(int:lolo){
-		
-		int:trer;
-		float:terwtw;
-	bool:pana;
-	pana=1;
-	}
-	int:tr;
-	
+	float funcion(int:parametro2){
+		int:variFun1;
+		variFun1=8*2;
+		float:variFun2;
+		variFun2=2.8/2;
+	}	
  
 }
